@@ -21,7 +21,7 @@ import {
 } from 'graphql';
 
 let getItems = function(ids, { offset, limit }) {
-  if (!ids) {
+  if (!ids || ids.length == 0) {
     ids = [];
   }
   let promises = (ids.slice(offset, offset + limit)).map((id) => {
@@ -106,7 +106,7 @@ let itemType = new GraphQLObjectType({
     },
     title : {
       type : GraphQLString,
-      description : 'The title of the story, poll or job.'
+      description : 'The title of the story, poll or job.',
     },
     kids : {
       type : new GraphQLList(itemType),
@@ -154,6 +154,7 @@ let itemType = new GraphQLObjectType({
     }
   })
 });
+
 
 let userType = new GraphQLObjectType({
   name : 'HackerNewsUser',

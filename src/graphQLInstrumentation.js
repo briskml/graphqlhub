@@ -50,7 +50,9 @@ const schemaFieldsForEach = (schema, fn) => {
 
 export default function graphQLInstrumentation(schema, loggingCallback, { addToResponse } = {}) {
   schemaFieldsForEach(schema, (field, type) => {
-    field.resolve = withTiming(wrapPromise(field.resolve || defaultResolveFn));
+    if (field.resolve) {
+      field.resolve = wrapPromise(field.resolve);
+    }
   });
   return (req, res, next) => {
     const start = new Date().getTime();

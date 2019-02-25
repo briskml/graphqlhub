@@ -328,6 +328,5 @@ let hnType = new GraphQLObjectType({
   }
 });
 
-console.log(UserType);
 
 export const QueryObjectType = hnType;
