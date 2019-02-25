@@ -207,7 +207,7 @@ let userType = new GraphQLObjectType({
 
 let createBulkType = function(bulkAPICall, description) {
   return {
-    type : new GraphQLList(itemType),
+    type : new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(itemType))),
     description,
     args : {
       limit : {
