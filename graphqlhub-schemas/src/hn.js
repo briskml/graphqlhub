@@ -243,6 +243,23 @@ const pollType = new GraphQLObjectType({
   })
 });
 
+const jobType = new GraphQLObjectType({
+  name: 'Job',
+  fields: () => ({
+    id: itemFields().id,
+    by: itemFields().by,
+    score: itemFields().score,
+    title: itemFields().title,
+    time: itemFields().time,
+    timeISO: itemFields().timeISO,
+    jobUrl: {
+      ...toNonNull(itemFields().url),
+      resolve: obj => obj.url
+    },
+    deleted: itemFields().deleted,
+    dead: itemFields().dead,
+  })
+});
 
 let userType = new GraphQLObjectType({
   name : 'HackerNewsUser',
@@ -292,12 +309,14 @@ let userType = new GraphQLObjectType({
 
 let topLevelItemType = new GraphQLUnionType({
   name: 'TopLevelItem',
-  types: [ storyType, pollType ],
-  resolveType(value) {
+  types: [ storyType, pollType, jobType ],
+  resolveType: function(value) {
     if (value.type == "story") {
       return storyType;
     } else if (value.type == "poll") {
       return pollType;
+    } else if (value.type == "job") {
+      return jobType;
     } else {
       return undefined;
     }
